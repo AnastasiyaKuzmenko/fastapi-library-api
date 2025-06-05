@@ -19,7 +19,15 @@ class UserOut(BaseModel):
     email: EmailStr
 
     class Config:
-        orm_mode = True     
+        orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class TokenData(BaseModel):
+    email: str | None = None  
 
 # ---------------------------
 # Books
