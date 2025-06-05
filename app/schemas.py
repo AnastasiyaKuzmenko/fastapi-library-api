@@ -18,8 +18,9 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class Token(BaseModel):
     access_token: str
@@ -60,8 +61,9 @@ class BookOut(BaseModel):
     copies_available: int
     description: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 # ---------------------------
 # Readers
@@ -80,8 +82,9 @@ class ReaderOut(BaseModel):
     name: str
     email: EmailStr
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 # ---------------------------
 # BooksBorrowedBooks
@@ -98,8 +101,9 @@ class BorrowOut(BaseModel):
     borrow_date: datetime
     return_date: Optional[datetime] = None
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 # ---------------------------
@@ -110,5 +114,6 @@ class ReaderBorrowedBook(BaseModel):
     book: BookOut
     borrow_date: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
