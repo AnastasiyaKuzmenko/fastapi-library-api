@@ -92,3 +92,17 @@ def checkout_book(
     db.commit()
     db.refresh(borrow_record)
     return borrow_record
+
+
+@router.get("/reader/{reader_id}", response_model=list[schemas.BorrowOut])
+def get_active_borrows_for_reader(
+    reader_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    borrows = db.query(models.BorrowedBook).filter(
+        models.BorrowedBook.reader_id == reader_id,
+        models.BorrowedBook.return_date == None
+    ).all()
+
+    return borrows
