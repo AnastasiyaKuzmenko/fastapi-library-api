@@ -8,7 +8,28 @@ router = APIRouter(
     tags=["Books"]
 )
 
+@router.post("/", response_model=schemas.BookOut)
+def create_book(
+    book_data: schemas.BookCreate, 
+    db: Session = Depends(get_db), 
+    current_user: models.User = Depends(get_current_user)
+):
 
+    book = models.Book(
+        title=book_data.title,
+        author = book_data.author,
+        publication_year = book_data.publication_year,
+        isbn = book_data.isbn,
+        copies_available = book_data.copies_available,
+        description = book_data.description,
+        book_id = book_data.book_id,
+        reader_id = book_data.reader_id
+    )
+
+    db.add(book)
+    db.commit()
+    db.refresh(book)
+    return book
 
 
 
@@ -58,4 +79,3 @@ def delete_book(
     db.delete(book)
     db.commit()
     return {"detail": "Book deleted"}
-
