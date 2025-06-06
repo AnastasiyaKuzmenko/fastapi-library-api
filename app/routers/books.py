@@ -10,13 +10,13 @@ router = APIRouter(
 
 
 # Get all books
-@router.post("/", response_model=list[schemas.BookOut])
+@router.get("/", response_model=list[schemas.BookOut])
 def get_books(db: Session = Depends(get_db)):
     return db.query(models.Book).all()
 
 
 # Get book by id
-@router.post("/{book_id}", response_model=schemas.BookOut)
+@router.get("/{book_id}", response_model=schemas.BookOut)
 def get_book(book_id: int, db: Session = Depends(get_db)):
     book = db.query(models.Book).filter(models.Book.id == book_id).first()
     if not book:
