@@ -8,6 +8,7 @@ router = APIRouter(
     tags=["Readers"]
 )
 
+
 # Get all readers
 @router.get("/", response_model=list[schemas.ReaderOut])
 def get_readers(db: Session = Depends(get_db)):
@@ -82,4 +83,3 @@ def delete_reader(
     db.delete(reader)
     db.commit()
     return {"detail": "Reader deleted"}
-
