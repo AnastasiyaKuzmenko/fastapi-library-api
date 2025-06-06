@@ -46,8 +46,6 @@ class BookCreate(BaseModel):
     isbn: Optional[str] = None
     copies_available: int = Field(default=1, ge=0)
     description: Optional[str] = None
-    book_id: int
-    reader_id: int
 
 
 class BookUpdate(BaseModel):
