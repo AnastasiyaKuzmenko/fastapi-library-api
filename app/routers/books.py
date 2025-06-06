@@ -21,9 +21,7 @@ def create_book(
         publication_year = book_data.publication_year,
         isbn = book_data.isbn,
         copies_available = book_data.copies_available,
-        description = book_data.description,
-        book_id = book_data.book_id,
-        reader_id = book_data.reader_id
+        description = book_data.description
     )
 
     db.add(book)
