@@ -3,12 +3,11 @@ import os
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from .dependencies import get_db
 from sqlalchemy.orm import Session
-from . import models, schemas
+from . import models
 from app.models import User
 
 load_dotenv()
@@ -25,8 +24,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
+
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
+
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -46,10 +47,11 @@ def decode_access_token(token: str):
     except JWTError:
         return None
 
+
 def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
-) -> models.User:    
+) -> models.User:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
@@ -74,4 +76,4 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    return user    
+    return user

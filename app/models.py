@@ -3,6 +3,7 @@ from sqlalchemy.orm import DeclarativeBase, relationship, Mapped, mapped_column
 from typing import Optional
 from datetime import datetime
 
+
 class Base(DeclarativeBase):
     pass
 
@@ -12,7 +13,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
-    hashed_password: Mapped[str] = mapped_column(nullable=False) 
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
 
 
 class Book(Base):
@@ -24,9 +25,9 @@ class Book(Base):
     publication_year: Mapped[Optional[int]] = mapped_column(nullable=True)
     isbn: Mapped[Optional[str]] = mapped_column(unique=True, nullable=True)
     copies_available: Mapped[int] = mapped_column(default=1)
+    description: Mapped[Optional[str]] = mapped_column(nullable=True)
 
     borrowed_books: Mapped[list["BorrowedBook"]] = relationship(back_populates="book")
-
 
 
 class Reader(Base):
@@ -37,7 +38,6 @@ class Reader(Base):
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
 
     borrowed_books: Mapped[list["BorrowedBook"]] = relationship(back_populates="reader")
-
 
 
 class BorrowedBook(Base):
@@ -51,5 +51,3 @@ class BorrowedBook(Base):
 
     book: Mapped["Book"] = relationship(back_populates="borrowed_books")
     reader: Mapped["Reader"] = relationship(back_populates="borrowed_books")
-
-

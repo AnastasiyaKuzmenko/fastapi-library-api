@@ -6,13 +6,16 @@ from datetime import datetime
 # Users
 # ---------------------------
 
+
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
 
+
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
 
 class UserOut(BaseModel):
     id: int
@@ -22,17 +25,19 @@ class UserOut(BaseModel):
         "from_attributes": True
     }
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
 
 class TokenData(BaseModel):
-    email: str | None = None  
+    email: str | None = None
 
 # ---------------------------
 # Books
 # ---------------------------
+
 
 class BookCreate(BaseModel):
     title: str
@@ -44,6 +49,7 @@ class BookCreate(BaseModel):
     book_id: int
     reader_id: int
 
+
 class BookUpdate(BaseModel):
     title: str
     author: str
@@ -51,6 +57,7 @@ class BookUpdate(BaseModel):
     isbn: Optional[str] = None
     copies_available: int = Field(default=1, ge=0)
     description: Optional[str] = None
+
 
 class BookOut(BaseModel):
     id: int
@@ -69,13 +76,16 @@ class BookOut(BaseModel):
 # Readers
 # ---------------------------
 
+
 class ReaderCreate(BaseModel):
     name: str
     email: EmailStr
 
+
 class ReaderUpdate(BaseModel):
     name: str
     email: EmailStr
+
 
 class ReaderOut(BaseModel):
     id: int
@@ -89,6 +99,8 @@ class ReaderOut(BaseModel):
 # ---------------------------
 # BooksBorrowedBooks
 # ---------------------------
+
+
 class BorrowCreate(BaseModel):
     book_id: int
     reader_id: int
