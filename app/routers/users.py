@@ -10,8 +10,8 @@ router = APIRouter(
 )
 
 
-@router.get("/register", response_model=schemas.UserOut)
-async def register_users(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
+@router.post("/register", response_model=schemas.UserOut)
+def register_users(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(
