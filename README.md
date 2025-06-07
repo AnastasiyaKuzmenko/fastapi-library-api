@@ -77,7 +77,7 @@ pytest tests/
 - Вход: POST `/auth/login` — возврат JWT-токена.
 - Защищённые эндпоинты:
     - Все CRUD-операции над книгами, читателями, а также выдача/возврат книг защищены JWT.
-    - Исключения: `/users/register`, `/users/login`, `/books/`, `/books/{book_id}`, `/readers/`, `/readers/{reader_id}`, — публичны.
+    - Исключения: `/users/register`, `/users/login`, `/books/`, `/books/{book_id}` — публичны.
 
 - Используются библиотеки:
     - `python-jose` для работы с JWT.
@@ -109,3 +109,17 @@ pytest tests/
 
 #### 3. Запрет на повторную выдачу уже выданной книги, и возврат уже возвращённой — обрабатывается бизнес-логикой через проверки 
 `return_date IS NULL.`
+
+
+## ❗ Сложности и как они были решены
+- JWT токен не подхватывался:
+Добавлена функция зависимости get_current_user, обрабатывающая OAuth2PasswordBearer.
+
+- Проблема с возвратом уже возвращённой книги:
+Добавлена проверка return_date IS NULL при возврате.
+
+- Ограничение на 3 книги у читателя:
+Реализовано через SQL-запрос count() по BorrowedBooks WHERE reader_id=? AND return_date IS NULL.
+
+- Добавление поля через миграцию:
+Использован alembic revision --autogenerate для поля description в таблице Book.
