@@ -89,3 +89,43 @@ def test_update_book_success(client, db):
     assert data["isbn"] == updated_book["isbn"]
     assert data["copies_available"] == updated_book["copies_available"]
     assert data["description"] == updated_book["description"]
+
+
+def test_delete_book_success(client, db):
+    user = models.User(
+        email="test@example.com",
+        hashed_password=auth.get_password_hash("password123")
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    login_response = client.post("/users/login", data={
+        "username": "test@example.com",
+        "password": "password123"
+    })
+    assert login_response.status_code == 200
+    token = login_response.json()["access_token"]
+
+    headers = {"Authorization": f"Bearer {token}"}
+
+    book = models.Book(
+        title="Test Book",
+        author="Author",
+        publication_year=2023,
+        isbn="123-4567890123",
+        copies_available=4,
+        description="Test description"
+    )
+
+    db.add(book)
+    db.commit()
+    db.refresh(book)
+
+    response = client.delete(f"/books/{book.id}", headers=headers)
+
+    assert response.status_code == 200
+    assert response.json() == {"detail": "Book deleted"}
+
+    deleted_book = db.query(models.Book).filter(models.Book.id == book.id).first()
+    assert deleted_book is None
