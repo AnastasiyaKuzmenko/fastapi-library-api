@@ -46,7 +46,7 @@ class BorrowedBook(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
     reader_id: Mapped[int] = mapped_column(ForeignKey("readers.id"))
-    borrowed_date: Mapped[datetime] = mapped_column(default=datetime.utcnow) # check
+    borrowed_date: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     return_date: Mapped[Optional[datetime]] = mapped_column(nullable=True)
 
     book: Mapped["Book"] = relationship(back_populates="borrowed_books")

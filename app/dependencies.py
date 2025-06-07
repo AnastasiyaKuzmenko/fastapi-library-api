@@ -15,7 +15,7 @@ def get_db():
         db.close()
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login") # check
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 
 def get_current_user(
