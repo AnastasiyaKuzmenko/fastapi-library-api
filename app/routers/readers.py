@@ -11,13 +11,20 @@ router = APIRouter(
 
 # Get all readers
 @router.get("/", response_model=list[schemas.ReaderOut])
-def get_readers(db: Session = Depends(get_db)):
+def get_readers(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
     return db.query(models.Reader).all()
 
 
 # Get reader by id
 @router.get("/{reader_id}", response_model=schemas.ReaderOut)
-def get_reader(reader_id: int, db: Session = Depends(get_db)):
+def get_reader(
+    reader_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
     reader = db.query(models.Reader).filter(models.Reader.id == reader_id).first()
     if not reader:
         raise HTTPException(
