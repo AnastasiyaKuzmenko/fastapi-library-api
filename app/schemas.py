@@ -108,7 +108,7 @@ class BorrowOut(BaseModel):
     id: int
     book_id: int
     reader_id: int
-    borrow_date: datetime
+    borrowed_date: datetime
     return_date: Optional[datetime] = None
 
     model_config = {
@@ -122,7 +122,7 @@ class BorrowOut(BaseModel):
 
 class ReaderBorrowedBook(BaseModel):
     book: BookOut
-    borrow_date: datetime
+    borrowed_date: datetime
 
     model_config = {
         "from_attributes": True

@@ -79,10 +79,10 @@ def checkout_book(
             detail="Reader already has 3 borrowed books"
         )
 
-    borrow_record = models.BorrowedBooks(
+    borrow_record = models.BorrowedBook(
         book_id=borrow_data.book_id,
         reader_id=borrow_data.reader_id,
-        borrow_date=datetime.utcnow(),
+        borrowed_date=datetime.utcnow(),
         return_date=None
     )
 
