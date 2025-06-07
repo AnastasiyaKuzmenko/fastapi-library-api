@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.post("/return", response_model=schemas.BorrowOut)
+@router.put("/return", response_model=schemas.BorrowOut)
 def return_book(
     borrow_data: schemas.BorrowCreate,
     db: Session = Depends(get_db),
