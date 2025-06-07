@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app import schemas, models, auth
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
-from ..dependencies import get_db
+from ..dependencies import get_db, get_current_user
 
 router = APIRouter(
     prefix="/users",
@@ -14,7 +14,7 @@ router = APIRouter(
 async def register_users(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.email == user_data.email).first()
     if existing_user:
-            raise HTTPException(
+        raise HTTPException(
             status_code=400,
             detail="User with this email already exist"
         )
