@@ -44,3 +44,10 @@ app.dependency_overrides[get_db] = override_get_db
 @pytest.fixture()
 def client():
     return TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def clear_db(db):
+    for table in reversed(Base.metadata.sorted_tables):
+        db.execute(table.delete())
+    db.commit()
