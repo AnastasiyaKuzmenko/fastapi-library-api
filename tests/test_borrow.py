@@ -1,5 +1,6 @@
 from app import models, auth
 
+
 def test_checkout_book_success(client, db):
     user = models.User(
         email="test@example.com",
@@ -8,7 +9,6 @@ def test_checkout_book_success(client, db):
     db.add(user)
     db.commit()
     db.refresh(user)
-
 
     login_response = client.post("/users/login", data={
         "username": "test@example.com",
@@ -20,7 +20,7 @@ def test_checkout_book_success(client, db):
     headers = {
         "Authorization": f"Bearer {token}"
     }
-    
+
     book = models.Book(title="Test Book", author="Author", copies_available=1)
     db.add(book)
     db.commit()
@@ -34,14 +34,13 @@ def test_checkout_book_success(client, db):
     response = client.post("/borrow/checkout", json={
         "book_id": book.id,
         "reader_id": reader.id
-    },  headers=headers )
+    },  headers=headers)
 
     assert response.status_code == 200
     data = response.json()
     assert data["book_id"] == book.id
     assert data["reader_id"] == reader.id
     assert data["return_date"] is None
-
 
 
 def test_checkout_book_more_4_books(client, db):
@@ -52,7 +51,6 @@ def test_checkout_book_more_4_books(client, db):
     db.add(user)
     db.commit()
     db.refresh(user)
-
 
     login_response = client.post("/users/login", data={
         "username": "test@example.com",
@@ -83,10 +81,9 @@ def test_checkout_book_more_4_books(client, db):
         response = client.post("/borrow/checkout", json={
             "book_id": books[i].id,
             "reader_id": reader.id
-        },  headers=headers )
+        },  headers=headers)
         assert response.status_code == 200
-
 
     response = client.post("/borrow/checkout", json={"book_id": books[3].id, "reader_id": reader.id}, headers=headers)
     assert response.status_code == 400
-    assert response.json()["detail"] == "Reader already has 3 borrowed books"    
+    assert response.json()["detail"] == "Reader already has 3 borrowed books"
